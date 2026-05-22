@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#08090b">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="PULSE Music">
+    <title>PULSE Music</title>
+    <link rel="manifest" href="./manifest.webmanifest">
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="phone-frame" aria-label="PULSE Music app preview">
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="status-icons" aria-hidden="true">5G  100%</span>
+        </div>
+
+        <header class="app-header">
+          <div>
+            <p class="eyebrow">Adaptive session</p>
+            <h1>PULSE Music</h1>
+          </div>
+          <button class="icon-button" type="button" aria-label="Open settings">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4Z"></path>
+              <path d="M19.4 15a1.6 1.6 0 0 0 .32 1.76l.06.06a1.94 1.94 0 0 1-2.74 2.74l-.06-.06a1.6 1.6 0 0 0-1.76-.32 1.6 1.6 0 0 0-.96 1.46V21a1.94 1.94 0 0 1-3.88 0v-.08A1.6 1.6 0 0 0 9.42 19a1.6 1.6 0 0 0-1.76.32l-.06.06a1.94 1.94 0 0 1-2.74-2.74l.06-.06A1.6 1.6 0 0 0 5.24 15a1.6 1.6 0 0 0-1.46-.96H3.7a1.94 1.94 0 0 1 0-3.88h.08a1.6 1.6 0 0 0 1.46-.96 1.6 1.6 0 0 0-.32-1.76l-.06-.06A1.94 1.94 0 0 1 7.6 4.64l.06.06A1.6 1.6 0 0 0 9.42 5a1.6 1.6 0 0 0 .96-1.46V3.46a1.94 1.94 0 0 1 3.88 0v.08A1.6 1.6 0 0 0 15.22 5a1.6 1.6 0 0 0 1.76-.32l.06-.06a1.94 1.94 0 0 1 2.74 2.74l-.06.06a1.6 1.6 0 0 0-.32 1.76 1.6 1.6 0 0 0 1.46.96h.08a1.94 1.94 0 0 1 0 3.88h-.08a1.6 1.6 0 0 0-1.46.98Z"></path>
+            </svg>
+          </button>
+        </header>
+
+        <section class="now-playing">
+          <canvas id="pulseCanvas" width="720" height="500" aria-label="Animated audio field"></canvas>
+          <div class="track-meta">
+            <div>
+              <p id="adaptiveLabel" class="eyebrow">Running boost</p>
+              <h2 id="trackTitle">Neon Stride</h2>
+              <p id="trackArtist">Astra Lane</p>
+            </div>
+            <button id="playButton" class="play-button" type="button" aria-label="Play or pause">
+              <svg id="playIcon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M8 5v14l11-7Z"></path>
+              </svg>
+            </button>
+          </div>
+          <div class="progress-row">
+            <span id="elapsed">1:12</span>
+            <div class="progress-track" aria-hidden="true"><span id="progressFill"></span></div>
+            <span id="duration">3:48</span>
+          </div>
+          <div class="transport-row" aria-label="Playback controls">
+            <button id="previousButton" class="transport-button" type="button" aria-label="Previous song">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m11 18-7-6 7-6v12ZM20 18l-7-6 7-6v12Z"></path></svg>
+            </button>
+            <button id="rewindButton" class="transport-button" type="button" aria-label="Rewind 10 seconds">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14H5v-4M5.5 10.5A7 7 0 1 1 8 18M12 9v6l4 2"></path></svg>
+            </button>
+            <button id="nextButton" class="transport-button" type="button" aria-label="Next song">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m13 6 7 6-7 6V6ZM4 6l7 6-7 6V6Z"></path></svg>
+            </button>
+          </div>
+        </section>
+
+        <section class="upload-panel">
+          <div>
+            <p class="eyebrow">Local audio</p>
+            <h3>Upload MP3</h3>
+            <p id="uploadStatus">Use your own song and shape it with the adaptive mixer.</p>
+          </div>
+          <label class="upload-button">
+            <input id="fileInput" type="file" accept="audio/mpeg,audio/mp3,audio/*" multiple>
+            Choose
+          </label>
+          <audio id="uploadedAudio" preload="metadata"></audio>
+        </section>
+
+        <section class="recent-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Saved locally</p>
+              <h3>Recent MP3s</h3>
+            </div>
+            <button id="clearRecentButton" class="text-button" type="button">Clear</button>
+          </div>
+          <div id="recentList" class="recent-list">
+            <p>No saved MP3s yet.</p>
+          </div>
+        </section>
+
+        <section class="stem-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Stem separation</p>
+              <h3>AI Stem Mixer</h3>
+            </div>
+            <button id="separateStemsButton" class="text-button" type="button">Separate</button>
+          </div>
+          <p id="stemStatus">Upload an MP3, then separate it into vocals, drums, bass, and instruments.</p>
+          <div id="stemMixer" class="stem-mixer hidden">
+            <label>
+              <span>Vocals <strong id="stemVocalsValue">100</strong></span>
+              <input id="stemVocals" type="range" min="0" max="100" value="100">
+            </label>
+            <label>
+              <span>Drums <strong id="stemDrumsValue">100</strong></span>
+              <input id="stemDrums" type="range" min="0" max="100" value="100">
+            </label>
+            <label>
+              <span>Bass stem <strong id="stemBassValue">100</strong></span>
+              <input id="stemBass" type="range" min="0" max="100" value="100">
+            </label>
+            <label>
+              <span>Instruments <strong id="stemOtherValue">100</strong></span>
+              <input id="stemOther" type="range" min="0" max="100" value="100">
+            </label>
+          </div>
+        </section>
+
+        <nav class="mode-grid" aria-label="Adaptive modes">
+          <button class="mode-card active" type="button" data-mode="running">
+            <span class="mode-icon running" aria-hidden="true"></span>
+            <span>Running</span>
+            <small>Tempo lift</small>
+          </button>
+          <button class="mode-card" type="button" data-mode="studying">
+            <span class="mode-icon studying" aria-hidden="true"></span>
+            <span>Studying</span>
+            <small>Vocal cut</small>
+          </button>
+          <button class="mode-card" type="button" data-mode="gym">
+            <span class="mode-icon gym" aria-hidden="true"></span>
+            <span>Gym</span>
+            <small>Bass drive</small>
+          </button>
+          <button class="mode-card" type="button" data-mode="lateNight">
+            <span class="mode-icon night" aria-hidden="true"></span>
+            <span>Late Night</span>
+            <small>Smooth gain</small>
+          </button>
+        </nav>
+
+        <section class="adaptive-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Environment engine</p>
+              <h3 id="modeTitle">Running</h3>
+            </div>
+            <span id="bpmBadge">154 BPM</span>
+          </div>
+          <p id="modeDescription">Raises loudness carefully, searches for brighter high-tempo tracks, and keeps the beat locked to your stride.</p>
+          <div id="workoutPicker" class="workout-picker hidden" aria-label="Workout presets">
+            <button type="button" data-workout="strength" class="active">Strength</button>
+            <button type="button" data-workout="hiit">HIIT</button>
+            <button type="button" data-workout="cycling">Cycling</button>
+          </div>
+        </section>
+
+        <section class="mixer">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Sound mixer</p>
+              <h3>Adaptive mix</h3>
+            </div>
+            <button id="autoTuneButton" class="text-button" type="button">Auto</button>
+          </div>
+          <div class="slider-list">
+            <label>
+              <span>Volume <strong id="volumeValue">82</strong></span>
+              <input id="volume" type="range" min="0" max="100" value="82">
+            </label>
+            <label>
+              <span>Bass <strong id="bassValue">68</strong></span>
+              <input id="bass" type="range" min="0" max="100" value="68">
+            </label>
+            <label>
+              <span>Vocals off/on <strong id="vocalsValue">76</strong></span>
+              <input id="vocals" type="range" min="0" max="100" value="76">
+            </label>
+            <label>
+              <span>Noise cancel <strong id="noiseValue">42</strong></span>
+              <input id="noise" type="range" min="0" max="100" value="42">
+            </label>
+            <label>
+              <span>Smoothing / brightness <strong id="smoothValue">35</strong></span>
+              <input id="smooth" type="range" min="0" max="100" value="35">
+            </label>
+          </div>
+          <div class="ai-vocal-row">
+            <button id="aiVocalButton" class="ai-vocal-button" type="button">AI Vocal Remove Max</button>
+            <p id="aiVocalStatus">For uploaded stereo MP3s.</p>
+          </div>
+        </section>
+
+        <section class="queue">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Catalog-ready queue</p>
+              <h3>Next matches</h3>
+            </div>
+            <button class="text-button" type="button">Library</button>
+          </div>
+          <div id="queueList" class="queue-list"></div>
+        </section>
+
+        <footer class="tab-bar" aria-label="Main navigation">
+          <button class="active" type="button" aria-label="Home">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3Z"></path></svg>
+          </button>
+          <button type="button" aria-label="Search">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 21-4.3-4.3M10.8 18a7.2 7.2 0 1 1 0-14.4 7.2 7.2 0 0 1 0 14.4Z"></path></svg>
+          </button>
+          <button type="button" aria-label="Mixer">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M2 14h4M10 8h4M18 16h4"></path></svg>
+          </button>
+          <button type="button" aria-label="Profile">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 21a8 8 0 0 0-16 0M12 13a5 5 0 1 0 0-10 5 5 0 0 0 0 10Z"></path></svg>
+          </button>
+        </footer>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
