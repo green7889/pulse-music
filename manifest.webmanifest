@@ -1,0 +1,10 @@
+{
+  "name": "PULSE Music",
+  "short_name": "PULSE",
+  "description": "Adaptive music modes for running, studying, gym sessions, and late night listening.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#08090b",
+  "theme_color": "#08090b",
+  "orientation": "portrait"
+}

@@ -1,0 +1,11 @@
+{
+  "name": "pulse-music",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Adaptive music prototype with local MP3 playback, mixer controls, and optional Demucs stem separation.",
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "check": "node --check app/app.js && node --check server.mjs"
+  }
+}
